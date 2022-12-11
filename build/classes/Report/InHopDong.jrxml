@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1242ff7f-690b-4872-b57e-db4a5b4e18de">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="MaHD" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT        dbo.HopDong.MaHD, dbo.HopDong.NgayKy, dbo.HopDong.NgayHetHan, dbo.HopDong.MaPT, dbo.HopDong.TienCoc, dbo.KhachHang.TenKH, dbo.KhachHang.NgaySinh, dbo.KhachHang.SDT, dbo.KhachHang.DiaChi, 
+                         dbo.KhachHang.CCCD, dbo.KhachHang.Email, dbo.KhachHang.GioiTinh, dbo.LoaiPhong.TenLoaiPhong, dbo.PhongTro.DienTich, dbo.PhongTro.GiaTien, dbo.PhongTro.Tang
+FROM            dbo.HopDong INNER JOIN
+                         dbo.KhachHang ON dbo.HopDong.MaKH = dbo.KhachHang.MaKH INNER JOIN
+                         dbo.PhongTro ON dbo.HopDong.MaPT = dbo.PhongTro.MaPT INNER JOIN
+                         dbo.LoaiPhong ON dbo.PhongTro.MaLoaiPhong = dbo.LoaiPhong.MaLoaiPhong
+where dbo.HopDong.MaHD =$P{MaHD}]]>
+	</queryString>
+	<field name="MaHD" class="java.lang.String"/>
+	<field name="NgayKy" class="java.sql.Date"/>
+	<field name="NgayHetHan" class="java.sql.Date"/>
+	<field name="MaPT" class="java.lang.String"/>
+	<field name="TienCoc" class="java.math.BigDecimal"/>
+	<field name="TenKH" class="java.lang.String"/>
+	<field name="NgaySinh" class="java.sql.Date"/>
+	<field name="SDT" class="java.lang.String"/>
+	<field name="DiaChi" class="java.lang.String"/>
+	<field name="CCCD" class="java.lang.String"/>
+	<field name="Email" class="java.lang.String"/>
+	<field name="GioiTinh" class="java.lang.Integer"/>
+	<field name="TenLoaiPhong" class="java.lang.String"/>
+	<field name="DienTich" class="java.lang.Integer"/>
+	<field name="GiaTien" class="java.math.BigDecimal"/>
+	<field name="Tang" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="191" y="17" width="124" height="30" uuid="f14d9b5d-33ac-4ff5-869b-bb7c366728cb"/>
+				<textElement>
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hợp đồng]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="265" splitType="Stretch">
+			<staticText>
+				<reportElement x="27" y="10" width="100" height="20" uuid="fc52db7c-fc8f-46cf-bacc-d8e8014e43b1"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mã hợp đồng:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="41" width="100" height="20" uuid="4a8f1a8b-a782-48f3-9a64-51f92e8a64b0"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mã phòng:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="73" width="100" height="20" uuid="6c0026e8-1e8a-4fcc-a0c3-82e194ec4a0a"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tên phòng:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="105" width="100" height="20" uuid="56e50dc3-5150-4abd-b44c-8d9a6b5ec5f4"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diện tích:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="136" width="100" height="20" uuid="0bc51acc-8eeb-4f53-b359-0b52424cea4f"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tầng:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="169" width="100" height="20" uuid="aec869f0-b792-4a42-aa2e-8c330ef2620e"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Giá phòng: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="336" y="10" width="100" height="20" uuid="395543d1-0c64-4090-8035-6c5470c36609"/>
+				<textFieldExpression><![CDATA[$F{TenKH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="236" y="10" width="100" height="20" uuid="4d1aa176-118d-49ca-9bc8-ed4b95172f96"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tên khách hàng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="41" width="100" height="20" uuid="881b5da0-b745-442f-a5a6-128ce3fcf7c9"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SDT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="73" width="100" height="20" uuid="dd4723be-a69d-4896-830a-43568e945fd8"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày sinh:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="108" width="100" height="20" uuid="1902ceb8-2c60-456e-8637-7384ecc0d1f1"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Địa chỉ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="136" width="100" height="20" uuid="116731bf-1f94-4049-84e4-92ef4f5fac27"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CCCD:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="169" width="100" height="20" uuid="8463a5d9-54ee-4620-b53b-1458562533ef"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="200" width="100" height="20" uuid="1d6695d9-cf0d-498f-a186-a5feb2bbc7ed"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tiền cọc: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="200" width="100" height="20" uuid="7810637a-9d2a-4478-a5b7-5c8bfa5015e1"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày ký:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="240" width="100" height="20" uuid="352cc0b1-34a5-41f3-ade4-ea0ad3cb53ee"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày hết hạn:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="117" y="10" width="100" height="20" uuid="c0e68282-3ad0-4ea7-a094-feb543c82c3c"/>
+				<textFieldExpression><![CDATA[$F{MaHD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="43" width="100" height="20" uuid="858c250d-6065-4ad3-9c41-6ffc6c0199ce"/>
+				<textFieldExpression><![CDATA[$F{MaPT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="73" width="100" height="20" uuid="c023d265-f918-4e6a-a3ae-a433cd14be2a"/>
+				<textFieldExpression><![CDATA[$F{TenLoaiPhong}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="169" width="100" height="20" uuid="fc3dfca1-93b8-487b-8619-fe8dd2e61cd4"/>
+				<textFieldExpression><![CDATA[$F{GiaTien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="105" width="100" height="20" uuid="c6aa464b-6bad-452e-b5af-6fb33519c845"/>
+				<textFieldExpression><![CDATA[$F{DienTich}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="136" width="100" height="20" uuid="40fd5331-099a-4770-aac9-44507d2f5eea"/>
+				<textFieldExpression><![CDATA[$F{Tang}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="200" width="100" height="20" uuid="82f1fff5-69c1-4bd0-87ab-11219c5e67cb"/>
+				<textFieldExpression><![CDATA[$F{TienCoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="41" width="100" height="20" uuid="6bd1268f-be76-4dfb-9ac2-48e3149a1220"/>
+				<textFieldExpression><![CDATA[$F{SDT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="336" y="73" width="100" height="20" uuid="79e7866b-fbdc-4720-965d-efc998368080"/>
+				<textFieldExpression><![CDATA[$F{NgaySinh}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="108" width="100" height="20" uuid="57339763-57ff-488a-ac0d-a66b33e4d9c3"/>
+				<textFieldExpression><![CDATA[$F{DiaChi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="136" width="100" height="20" uuid="3e16ea09-b73d-4364-870f-7c4ebc92e82b"/>
+				<textFieldExpression><![CDATA[$F{CCCD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="169" width="100" height="20" uuid="d0fc816a-759e-4a19-a264-c8966676620d"/>
+				<textFieldExpression><![CDATA[$F{Email}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="336" y="200" width="100" height="20" uuid="a6909184-5db5-40fc-a2ec-dce61b2b1266"/>
+				<textFieldExpression><![CDATA[$F{NgayKy}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="336" y="240" width="100" height="20" uuid="35561d58-b812-4f0a-b635-64764b6f662a"/>
+				<textFieldExpression><![CDATA[$F{NgayHetHan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="310" splitType="Stretch">
+			<staticText>
+				<reportElement x="27" y="211" width="524" height="88" uuid="c676cd00-247b-498e-ad90-a96d24a283fa"/>
+				<text><![CDATA[
+2.1. Thời điểm Bên A bàn giao Tài sản thuê vào ngày ..... tháng ..... năm;
+
+2.2. Bên B được toàn quyền sử dụng Tài sản thuê kể từ thời điểm được Bên A bàn giao như quy định tại Mục 2.1 trên đây.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="32" width="524" height="150" uuid="e0cf6ed4-c296-4d55-a567-27857a99287b"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[
+
+1.1. Bên A đồng ý cho Bên B thuê và Bên B cũng đồng ý thuê quyền sử dụng đất và một căn nhà.........tầng gắn liền với quyền sử dụng đất tại địa chỉ ... để sử dụng làm nơi để ở.
+
+Diện tích quyền sử dụng đất :......... m2;
+
+Diện tích căn nhà :.......... m2;
+
+1.2. Bên A cam kết quyền sử sụng đất và căn nhà gắn liền trên đất trên là tài sản sở hữu hợp pháp của Bên A. Mọi tranh chấp phát sinh từ tài sản cho thuê trên Bên A hoàn toàn chịu trách nhiệm trước pháp luật.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="12" width="275" height="20" uuid="e16ea0b2-e7bd-4115-9a67-3772f02f37a6"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Điều 1. Nhà ở và các tài sản cho thuê kèm theo nhà ở:
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="191" width="238" height="20" uuid="27a12cb0-3724-4680-9f53-04eefcd089f4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Điều 2. Bàn giao và sử dụng diện tích thuê:
+]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="127" splitType="Stretch">
+			<staticText>
+				<reportElement x="27" y="21" width="524" height="53" uuid="f6116c22-4900-430e-b3d4-4ee53e582059"/>
+				<text><![CDATA[3.1. Bên A cam kết cho Bên B thuê Tài sản thuê với thời hạn là ........ năm kể từ ngày bàn giao Tài sản thuê;
+
+3.2. Hết thời hạn thuê nêu trên nếu bên B có nhu cầu tiếp tục sử dụng thì Bên A phải ưu tiên cho Bên B tiếp tục thuê]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="1" width="152" height="20" uuid="ba8a833c-6840-4ca6-8f8d-cbd846e50b3b"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Điều 3. Thời hạn thuê]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="97" width="551" height="2" uuid="76e061cc-0add-4bf3-b75d-ef51b33467b1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="428" y="3" width="100" height="20" uuid="5fa548a6-1952-4dde-a008-f83d6ebc24b8"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bên cho thuê]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="3" width="100" height="20" uuid="a1380fb3-db16-40ec-a5f9-f4c93d794756"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bên  thuê]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="428" y="19" width="100" height="20" forecolor="#3399FF" uuid="757d6593-b427-4ba2-bb1b-fc158b2474da"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[(ghi rõ họ và tên)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="19" width="100" height="20" forecolor="#3399FF" uuid="835af13e-8dbf-45ac-8f70-a7b441316075"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[(ghi rõ họ và tên)]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
