@@ -107,4 +107,5 @@ public class QLKhachHang {
     public void setTrangThai(int TrangThai) {
         this.TrangThai = TrangThai;
     }
+    
 }

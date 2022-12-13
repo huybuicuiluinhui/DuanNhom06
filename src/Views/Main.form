@@ -2294,7 +2294,10 @@
                         <Component class="javax.swing.JComboBox" name="cbbSearchLP">
                           <Properties>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="0"/>
+                              <StringArray count="2">
+                                <StringItem index="0" value="C&#xf2;n"/>
+                                <StringItem index="1" value="H&#x1ebf;t"/>
+                              </StringArray>
                             </Property>
                           </Properties>
                           <Events>
@@ -2431,14 +2434,12 @@
                                                       <EmptySpace max="-2" attributes="0"/>
                                                       <Component id="rdoDangThue" min="-2" pref="94" max="-2" attributes="0"/>
                                                       <EmptySpace max="-2" attributes="0"/>
-                                                      <Component id="rdoHetHan" min="-2" pref="80" max="-2" attributes="0"/>
-                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                      <Component id="rdoChuaThue" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="rdoChuaThue" min="-2" pref="80" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="16" max="32767" attributes="0"/>
+                                      <EmptySpace pref="28" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -2551,7 +2552,6 @@
                                   <Component id="rdoDangThue" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel32" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                                   <Component id="rdoChuaThue" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="rdoHetHan" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                           </Group>
@@ -2636,7 +2636,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoDangThueActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JRadioButton" name="rdoHetHan">
+                    <Component class="javax.swing.JRadioButton" name="rdoChuaThue">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="c5" green="78" red="47" type="rgb"/>
@@ -2647,7 +2647,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="H&#x1ebf;t h&#x1ea1;n"/>
+                        <Property name="text" type="java.lang.String" value="Ch&#x1b0;a Thu&#xea;"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtTenKH">
@@ -2815,20 +2815,6 @@
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="null"/>
                         </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JRadioButton" name="rdoChuaThue">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="c5" green="78" red="47" type="rgb"/>
-                        </Property>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="buttonGroup1"/>
-                        </Property>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Ch&#x1b0;a thu&#xea;"/>
                       </Properties>
                     </Component>
                     <Component class="com.toedter.calendar.JDateChooser" name="jDateChNgaySinh">
@@ -3035,6 +3021,9 @@
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JTextField" name="txtTimKiemKH">
+                          <Events>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTimKiemKHKeyReleased"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnThemKH">
                           <Properties>

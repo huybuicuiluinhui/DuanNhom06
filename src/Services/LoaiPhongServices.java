@@ -38,8 +38,8 @@ public class LoaiPhongServices implements LoaiPhongServicesImpl{
     }
 
     @Override
-    public  ArrayList<QLLoaiPhong> getOne(String tenLP) {
-                return lpRP.getOne(tenLP);
+    public  ArrayList<QLLoaiPhong> getOne(int tt) {
+                return lpRP.getOne(tt);
     }
     
 }

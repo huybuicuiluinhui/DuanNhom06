@@ -58,6 +58,17 @@ public class QLLoaiPhong {
     public String toString() {
         return maLP;
     }
-    
-    
+     private String gettrangThai() {
+       if(TrangThai==0){
+           return "Còn";
+       }
+       else{
+           return "Hết";
+       }
+    }
+    public Object[] toDataRow(){
+        return new Object[]{maLP,tenLP,moTa,gettrangThai()};
+    }
+
+   
 }

@@ -44,8 +44,9 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
 
     @Override
     public void insert(HopDong hd) {
-        String sql = "insert into HopDong(MaHD, MaKH, MaPT, NgayKy, NgayHetHan,TienCoc,MoTa,TrangThai) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "exec sp_insert_HopDong ?, ?, ?, ?, ?, ?, ?, ?";
         try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+     
             ps.setObject(1, hd.getMaHD());
             ps.setObject(2, hd.getMaKH());
             ps.setObject(3, hd.getMaPT());
@@ -54,7 +55,9 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
             ps.setObject(6, hd.getTienCoc());
             ps.setObject(7, hd.getMoTa());
             ps.setObject(8, hd.getTrangThai());
-            ps.executeUpdate();
+           //  ps.setObject(0, ps);
+           ps.executeUpdate();
+            //con.close();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }

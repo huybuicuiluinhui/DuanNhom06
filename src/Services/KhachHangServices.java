@@ -35,5 +35,10 @@ public class KhachHangServices implements KhachHangServicesImpl{
     public void delete(String ma) {
         khRP.delete(ma);
     }
+
+    @Override
+    public ArrayList<QLKhachHang> getAllTK(String tenKH) {
+        return khRP.getAllTK(tenKH);
+    }
     
 }

@@ -22,4 +22,5 @@ public interface KhachHangRepositoriesImpl {
     void update(String ma, KhachHang kh);
 
     void delete(String ma); 
+     ArrayList<QLKhachHang> getAllTK(String tenKH);
 }

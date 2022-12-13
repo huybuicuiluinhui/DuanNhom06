@@ -1,4 +1,4 @@
- package Views;
+package Views;
 
 import DomainModels.DichVu;
 import DomainModels.HoaDon;
@@ -25,24 +25,18 @@ import ViewsModel.QLHoaDonChiTiet;
 import ViewsModel.QLHopDong;
 import ViewsModel.QLLoaiPhong;
 import ViewsModel.QLPhongTro;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfTable;
-import com.lowagie.text.pdf.PdfWriter;
+
 import java.awt.Color;
 import java.awt.Font;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
-import java.sql.Connection ;
+import java.sql.Connection;
 import java.util.Hashtable;
-import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -50,14 +44,14 @@ import javax.swing.table.DefaultTableModel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.table.JTableHeader;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+
 public class Main extends javax.swing.JFrame {
 
     private LoaiPhongServicesImpl lpsv;
@@ -67,6 +61,7 @@ public class Main extends javax.swing.JFrame {
     private HopDongServices hopDongSV;
     private HoaDonServices hoaDonDV;
     private HoaDonChiTietServices hdctSV;
+    int tt = 0;
 
     public Main() {
         initComponents();
@@ -78,16 +73,20 @@ public class Main extends javax.swing.JFrame {
         this.hoaDonDV = new HoaDonServices();
         this.hdctSV = new HoaDonChiTietServices();
 
-        showDataComboBoxKhachHang();
-        showDataComboBoxPhong();
-        tblPhong.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD,12));
+        //showDataComboBoxKhachHang();
+        //  showDataComboBoxPhong(tt);
+        tblPhong.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
         tblPhong.getTableHeader().setOpaque(false);
         tblPhong.getTableHeader().setBackground(Color.BLACK);
-        tblPhong.getTableHeader().setForeground(new Color(255,255,255));
+        tblPhong.getTableHeader().setForeground(new Color(255, 255, 255));
         tblPhong.setRowHeight(25);
-                this.loadTableHopDong();
-       // showDataComboBoxDichVu();
-        //showDataComboBoxThongke();
+        this.loadTableHopDong();
+        showDataComboBoxDichVu();
+        showDataComboBoxThongke();
+        showDataComboBoxHoaDonChiTiet();
+        showDataComboBoxKhachHang();
+        showDataHD();
+        showDataComboBoxPhong(tt);
 
     }
     int with = 210;
@@ -110,6 +109,7 @@ public class Main extends javax.swing.JFrame {
             }
         }).start();
     }
+
     public void closeMenuBar() {
         new Thread(new Runnable() {
             @Override
@@ -137,6 +137,14 @@ public class Main extends javax.swing.JFrame {
                 tb.getMoTa(),
                 tb.getTrangThai() == 1 ? "Còn" : "Hết",};
             dtm.addRow(rowData);
+        }
+    }
+
+    public void TKloaiPhong(int tenLP) {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblLoaiPhong.getModel();
+        dtm.setRowCount(0);
+        for (QLLoaiPhong lp : this.lpsv.getOne(tenLP)) {
+            dtm.addRow(lp.toDataRow());
         }
     }
 
@@ -268,7 +276,7 @@ public class Main extends javax.swing.JFrame {
         this.txtMaKH.setText("");
         this.txtTenKH.setText("");
         this.jDateChNgaySinh.setDate(null);
-        this.rdoChuaThue.isSelected();
+        // this.rdoChuaThue.isSelected();
         this.rdoNam.isSelected();
         this.txtSDT.setText("");
         this.txtDiaChi.setText("");
@@ -299,10 +307,8 @@ public class Main extends javax.swing.JFrame {
             gt = 0;
         }
         int tt = 0; // đang thuê
-        if (rdoHetHan.isSelected()) {
+        if (rdoChuaThue.isSelected()) {
             tt = 1; // đã hết hạn
-        } else if (rdoChuaThue.isSelected()) {
-            tt = 2; // chưa thuê
         }
         if (Ma.length() == 0 || Ten.length() == 0 || SDT.length() == 0 || email.length() == 0 || diaChi.length() == 0 || ngaySinh_.length() == 0 || CCCD.length() == 0) {
             JOptionPane.showMessageDialog(this, "Dữ liệu cần nhập đầy đủ");
@@ -327,8 +333,27 @@ public class Main extends javax.swing.JFrame {
         kh.setCCCD(CCCD);
         kh.setEmail(email);
         kh.setTrangThai(tt);
-     
+
         return kh;
+    }
+
+    private void loadTableKhachHangTK(String tenKH) {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblKhachHang.getModel();
+        dtm.setRowCount(0);
+        // ten = txtTimKiemKhacHang.getText();
+        for (QLKhachHang tb : this.khsv.getAllTK(tenKH)) {
+            Object[] rowData = {
+                tb.getMaKH(),
+                tb.getTenKH(),
+                tb.getNgaySinh(),
+                tb.getGioiTinh() == 1 ? "Nam" : "Nữ",
+                tb.getSDT(),
+                tb.getDiaChi(),
+                tb.getCCCD(),
+                tb.getEmail(),
+                tb.getTrangThai() == 0 ? "Đang thuê" : "Chưa thuê"};
+            dtm.addRow(rowData);
+        }
     }
 
     private void loadTableKhachHang() {
@@ -344,7 +369,7 @@ public class Main extends javax.swing.JFrame {
                 tb.getDiaChi(),
                 tb.getCCCD(),
                 tb.getEmail(),
-                tb.getTrangThai() == 0 ? "Đang thuê" : tb.getTrangThai() == 1 ? "Đã hết hạn" : tb.getTrangThai() == 2 ? "Chưa thuê" : null};
+                tb.getTrangThai() == 0 ? "Đang thuê" : "Chưa Thuê",};
             dtm.addRow(rowData);
         }
     }
@@ -369,6 +394,7 @@ public class Main extends javax.swing.JFrame {
     public void loadComboLoaiPhong() {
         cbbLoaiPhong.removeAllItems();
         ArrayList<QLLoaiPhong> list = this.lpsv.getAll();
+
         for (QLLoaiPhong x : list) {
             cbbLoaiPhong.addItem(x.getMaLP());
             //cbbLoaiPhong.setName(x.getTenLP());
@@ -414,34 +440,31 @@ public class Main extends javax.swing.JFrame {
 
     ////---===================================================================================================================================================================
     public void loadTableHopDong() {
-        
+
         DefaultTableModel dtm = (DefaultTableModel) this.tblHopDong.getModel();
         dtm.setRowCount(0);
         for (QLHopDong dv : this.hopDongSV.getAllHD()) {
-           
+
             dtm.addRow(dv.toDataRow());
         }
     }
 
     public void showDataComboBoxKhachHang() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTenKhachHang.getModel();
+        dcm.removeAllElements();
         ArrayList<QLKhachHang> list = this.khsv.getAll();
         for (QLKhachHang x : list) {
             dcm.addElement(x.getTenKH());
-
         }
 
     }
 
-    public void showDataComboBoxPhong() {
+    public void showDataComboBoxPhong(int tt) {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTenPhong.getModel();
-        ArrayList<QLPhongTro> list = this.phongSV.getAll();
-        for (QLPhongTro x : list) {
-            if(x.getTrangthai()==1)
-            {
+        dcm.removeAllElements();
+        ArrayList<PhongTro> list = this.phongSV.comboBox(tt);
+        for (PhongTro x : list) {
             dcm.addElement(x.getMaPT());
-
-            }
         }
     }
 
@@ -457,11 +480,8 @@ public class Main extends javax.swing.JFrame {
         String ngayKy = txtNgayKi.getText();
         String ngayHH = txtNgayHetHan.getText();
         int indexKhachHang = cbbTenKhachHang.getSelectedIndex();
-        ArrayList<QLKhachHang> listKhachHang = this.khsv.getAll();
-        QLKhachHang kh = listKhachHang.get(indexKhachHang);
+
         int indexLoaiPhong = cbbTenPhong.getSelectedIndex();
-        ArrayList<QLPhongTro> listLoaiPhong = this.phongSV.getAll();
-        QLPhongTro ten = listLoaiPhong.get(indexLoaiPhong);
 
         if (maHD.trim().length() == 0 || moTa.trim().length() == 0 || tienCoc.trim().length() == 0 || ngayKy.trim().length() == 0 || ngayHH.trim().length() == 0) {
             JOptionPane.showMessageDialog(this, "Không bỏ được bỏ trống");
@@ -479,7 +499,10 @@ public class Main extends javax.swing.JFrame {
             return null;
 
         }
-
+        ArrayList<QLKhachHang> listKhachHang = this.khsv.getAll();
+        QLKhachHang kh = listKhachHang.get(indexKhachHang);
+        ArrayList<PhongTro> listLoaiPhong = this.phongSV.comboBox(indexLoaiPhong);
+        PhongTro ten = listLoaiPhong.get(indexLoaiPhong);
         HopDong hd = new HopDong(maHD, kh.getMaKH(), ten.getMaPT(), Date.valueOf(ngayKy), Date.valueOf(ngayHH), Double.parseDouble(tienCoc), moTa, tt);
         return hd;
     }
@@ -521,6 +544,7 @@ public class Main extends javax.swing.JFrame {
 
     public void showDataComboBoxHoaDonMaPhong() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbMaPhong.getModel();
+        dcm.removeAllElements();
         ArrayList<QLHopDong> list = this.hopDongSV.getAllHD();
         for (QLHopDong x : list) {
             dcm.addElement(x.getMaHD());
@@ -547,6 +571,7 @@ public class Main extends javax.swing.JFrame {
     ////---===================================================================================================================================================================
     public void showDataComboBoxDichVu() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTenDichVu.getModel();
+        dcm.removeAllElements();
         ArrayList<QLDichVu> list = this.dichvuSV.getAllDV();
         for (QLDichVu x : list) {
             dcm.addElement(x);
@@ -560,12 +585,13 @@ public class Main extends javax.swing.JFrame {
             dtm.addRow(dv.toDataRow());
         }
         BigDecimal tong = new BigDecimal(getTongTien(this.hdctSV.getAllHDCT(maHD), giaphong));
-        lbTongTien.setText(String.valueOf(tong) +" VNĐ");
+        lbTongTien.setText(String.valueOf(tong) + " VNĐ");
     }
 
     ////---===================================================================================================================================================================
     public void showDataComboBoxHoaDonChiTiet() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbMaHoaDonBangHDCT.getModel();
+        dcm.removeAllElements();
         ArrayList<QLHoaDon> list = this.hoaDonDV.getAllHD();
         for (QLHoaDon x : list) {
             dcm.addElement(x);
@@ -588,6 +614,7 @@ public class Main extends javax.swing.JFrame {
 
     public void showDataComboBoxThongke() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTrangThai.getModel();
+        dcm.removeAllElements();
         ArrayList<QLHoaDon> list = this.hoaDonDV.getAllHD();
         for (QLHoaDon x : list) {
             dcm.addElement(x.gettrangthai());
@@ -602,16 +629,18 @@ public class Main extends javax.swing.JFrame {
         }
 
     }
+
     ///////////-=====================================================================================================================================================================
-      public void showDataLoaiPhong() {
-        DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbSearchLP.getModel();
-        ArrayList<QLLoaiPhong> list = this.lpsv.getAll();
-        for (QLLoaiPhong x : list) {
-            dcm.addElement(x.getTenLP());
-        }
-    }
-  public void showDataHD() {
+//      public void showDataLoaiPhong() {
+//        DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbSearchLP.getModel();
+//        ArrayList<QLLoaiPhong> list = this.lpsv.getAll();
+//        for (QLLoaiPhong x : list) {
+//            dcm.addElement(x.getTenLP());
+//        }
+//    }
+    public void showDataHD() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTenKhachHang.getModel();
+        dcm.removeAllElements();
         ArrayList<QLDichVu> list = this.dichvuSV.getAllDV();
         for (QLDichVu x : list) {
             dcm.addElement(null);
@@ -755,7 +784,7 @@ public class Main extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         txtMaKH = new javax.swing.JTextField();
         rdoDangThue = new javax.swing.JRadioButton();
-        rdoHetHan = new javax.swing.JRadioButton();
+        rdoChuaThue = new javax.swing.JRadioButton();
         txtTenKH = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
@@ -768,7 +797,6 @@ public class Main extends javax.swing.JFrame {
         txtCCCD = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        rdoChuaThue = new javax.swing.JRadioButton();
         jDateChNgaySinh = new com.toedter.calendar.JDateChooser();
         jSeparator18 = new javax.swing.JSeparator();
         jSeparator19 = new javax.swing.JSeparator();
@@ -1841,6 +1869,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        cbbSearchLP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Còn", "Hết" }));
         cbbSearchLP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbSearchLPActionPerformed(evt);
@@ -1974,10 +2003,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        rdoHetHan.setBackground(new java.awt.Color(71, 120, 197));
-        buttonGroup1.add(rdoHetHan);
-        rdoHetHan.setForeground(new java.awt.Color(255, 255, 255));
-        rdoHetHan.setText("Hết hạn");
+        rdoChuaThue.setBackground(new java.awt.Color(71, 120, 197));
+        buttonGroup1.add(rdoChuaThue);
+        rdoChuaThue.setForeground(new java.awt.Color(255, 255, 255));
+        rdoChuaThue.setText("Chưa Thuê");
 
         txtTenKH.setBackground(new java.awt.Color(71, 120, 197));
         txtTenKH.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -2040,11 +2069,6 @@ public class Main extends javax.swing.JFrame {
         txtEmail.setForeground(new java.awt.Color(255, 255, 255));
         txtEmail.setBorder(null);
 
-        rdoChuaThue.setBackground(new java.awt.Color(71, 120, 197));
-        buttonGroup1.add(rdoChuaThue);
-        rdoChuaThue.setForeground(new java.awt.Color(255, 255, 255));
-        rdoChuaThue.setText("Chưa thuê");
-
         jDateChNgaySinh.setBackground(new java.awt.Color(71, 120, 197));
 
         javax.swing.GroupLayout DuLieu3Layout = new javax.swing.GroupLayout(DuLieu3);
@@ -2091,10 +2115,8 @@ public class Main extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(rdoDangThue, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(rdoHetHan, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rdoChuaThue)))))
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                                        .addComponent(rdoChuaThue, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(28, Short.MAX_VALUE))))
             .addGroup(DuLieu3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2181,8 +2203,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(DuLieu3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoDangThue)
                     .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoChuaThue)
-                    .addComponent(rdoHetHan))
+                    .addComponent(rdoChuaThue))
                 .addGap(50, 50, 50))
         );
 
@@ -2218,6 +2239,12 @@ public class Main extends javax.swing.JFrame {
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtTimKiemKH.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKHKeyReleased(evt);
+            }
+        });
 
         btnThemKH.setBackground(new java.awt.Color(153, 204, 255));
         btnThemKH.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -3668,61 +3695,60 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMaHoaDonActionPerformed
 
     private void btnHienThiHopDong1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHienThiHopDong1ActionPerformed
-     String maDV = this.txtTimKiemDV.getText();
-        int check = 0;
-        if (maDV.trim().length() == 0) {
-            JOptionPane.showMessageDialog(this, "Hãy nhập tên dịch vụ cần tìm kiếm");
-            return;
-        } else {
-            for (QLDichVu sv : this.dichvuSV.getAllDV()) {
-                if (sv.getMaDV().equalsIgnoreCase(txtTimKiemDV.getText())) {
-                    check++;
-                    this.txtMaDichVu.setText(sv.getMaDV());
-                    this.txtTenDV.setText(sv.getTenDV());
-                    this.txtDonViDichVu.setText(sv.getDonVi());
-                    JOptionPane.showMessageDialog(this, "Tìm thấy dịch vụ");
-                }
-            }
-        }
-        if (check == 0) {
-            this.clearFormKhachHang();
-            JOptionPane.showMessageDialog(this, "Không tìm thấy dịch vụ");
-        }
-        try {
-            Connection conn = DBConnection.getConnection();
-            if (conn != null) {
-                DefaultTableModel dtm = (DefaultTableModel) this.tblDichVu.getModel();
-                dtm.setRowCount(0);
-                String sql = "SELECT * FROM DichVu WHERE MaDichVu= ?";
-                java.sql.CallableStatement ps = conn.prepareCall(sql);
-                ps.setString(1, txtMaDichVu.getText());
-                ps.execute();
-                java.sql.ResultSet rs = ps.getResultSet();
-                while (rs.next()) {
-                    String MaDichVu = rs.getString("MaDichVu");
-                    String TenDichVu = rs.getString("TenDichVu");
-                    String Gia = rs.getString("Gia");
-                    String DonVi = rs.getString("DonVi");
-                    int tt = rs.getInt("TrangThai");
-                    if (tt == 1) {
-                        this.rdoHoatDong.setSelected(true);
-                    } else {
-                        this.rdoNgungHD.setSelected(true);
-
-                    }
-                    dtm.addRow(new Object[]{MaDichVu, TenDichVu,Gia,DonVi, tt == 1 ? "Hoạt động" : "Ngừng hoạt động",
-                     });
-                }
-
-            } else {
-                
-                JOptionPane.showMessageDialog(this, "Hãy nhập mã dịch vụ cần tìm");
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }        
+//        String maDV = this.txtTimKiemDV.getText();
+//        int check = 0;
+//        if (maDV.trim().length() == 0) {
+//            JOptionPane.showMessageDialog(this, "Hãy nhập tên dịch vụ cần tìm kiếm");
+//            return;
+//        } else {
+//            for (QLDichVu sv : this.dichvuSV.getAllDV()) {
+//                if (sv.getMaDV().equalsIgnoreCase(txtTimKiemDV.getText())) {
+//                    check++;
+//                    this.txtMaDichVu.setText(sv.getMaDV());
+//                    this.txtTenDV.setText(sv.getTenDV());
+//                    this.txtDonViDichVu.setText(sv.getDonVi());
+//                    JOptionPane.showMessageDialog(this, "Tìm thấy dịch vụ");
+//                }
+//            }
+//        }
+//        if (check == 0) {
+//            this.clearFormKhachHang();
+//            JOptionPane.showMessageDialog(this, "Không tìm thấy dịch vụ");
+//        }
+//        try {
+//            Connection conn = DBConnection.getConnection();
+//            if (conn != null) {
+//                DefaultTableModel dtm = (DefaultTableModel) this.tblDichVu.getModel();
+//                dtm.setRowCount(0);
+//                String sql = "SELECT * FROM DichVu WHERE MaDichVu= ?";
+//                java.sql.CallableStatement ps = conn.prepareCall(sql);
+//                ps.setString(1, txtMaDichVu.getText());
+//                ps.execute();
+//                java.sql.ResultSet rs = ps.getResultSet();
+//                while (rs.next()) {
+//                    String MaDichVu = rs.getString("MaDichVu");
+//                    String TenDichVu = rs.getString("TenDichVu");
+//                    String Gia = rs.getString("Gia");
+//                    String DonVi = rs.getString("DonVi");
+//                    int tt = rs.getInt("TrangThai");
+//                    if (tt == 1) {
+//                        this.rdoHoatDong.setSelected(true);
+//                    } else {
+//                        this.rdoNgungHD.setSelected(true);
+//
+//                    }
+//                    dtm.addRow(new Object[]{MaDichVu, TenDichVu, Gia, DonVi, tt == 1 ? "Hoạt động" : "Ngừng hoạt động",});
+//                }
+//
+//            } else {
+//
+//                JOptionPane.showMessageDialog(this, "Hãy nhập mã dịch vụ cần tìm");
+//                return;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return;
+//        }
     }//GEN-LAST:event_btnHienThiHopDong1ActionPerformed
 
     private void btnInHopDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHopDongActionPerformed
@@ -3806,20 +3832,15 @@ public class Main extends javax.swing.JFrame {
         if (hd == null) {
             return;
         }
-          int indexPhongTro = cbbTenPhong.getSelectedIndex();
-        ArrayList<QLPhongTro> listPhong = this.phongSV.getAll();
-        QLPhongTro kh = listPhong.get(indexPhongTro);
-        ArrayList<QLHopDong> list = this.hopDongSV.getAllHD();
-        for (QLHopDong x : list) {
-            if(x.getMaPT().equals(ABORT))
-//        }
-//       if(hd)
+        //int indexPhongTro = cbbTenPhong.getSelectedIndex();
+        // /ArrayList<QLPhongTro> listPhong = this.phongSV.getAll();
+        //  QLPhongTro kh = listPhong.get(indexPhongTro);
+        // ArrayList<QLHopDong> list = this.hopDongSV.getAllHD();
+        hopDongSV.insert(hd);
         this.loadTableHopDong();
         JOptionPane.showMessageDialog(this, "Tạo hợp đồng thành công");
         clearFormHopDong();
 
-        }
-    
     }//GEN-LAST:event_btnThemHopDongActionPerformed
 
     private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
@@ -3861,7 +3882,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHienThiDVActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-     String maDV = this.txtTimKiemDV.getText();
+        String maDV = this.txtTimKiemDV.getText();
         int check = 0;
         if (maDV.trim().length() == 0) {
             JOptionPane.showMessageDialog(this, "Hãy nhập tên dịch vụ cần tìm kiếm");
@@ -3903,12 +3924,11 @@ public class Main extends javax.swing.JFrame {
                         this.rdoNgungHD.setSelected(true);
 
                     }
-                    dtm.addRow(new Object[]{MaDichVu, TenDichVu,Gia,DonVi, tt == 1 ? "Hoạt động" : "Ngừng hoạt động",
-                     });
+                    dtm.addRow(new Object[]{MaDichVu, TenDichVu, Gia, DonVi, tt == 1 ? "Hoạt động" : "Ngừng hoạt động",});
                 }
 
             } else {
-                
+
                 JOptionPane.showMessageDialog(this, "Hãy nhập mã dịch vụ cần tìm");
                 return;
             }
@@ -4026,7 +4046,7 @@ public class Main extends javax.swing.JFrame {
     private void cbbMaHoaDonBangHDCTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbMaHoaDonBangHDCTItemStateChanged
         QLHoaDon dv = (QLHoaDon) cbbMaHoaDonBangHDCT.getSelectedItem();
         // String maDV = dv.getMaDV();
-        lblGiaPhongHoaDon.setText(String.valueOf(dv.getGiaPhong()).toString() +" VNĐ");
+        lblGiaPhongHoaDon.setText(String.valueOf(dv.getGiaPhong()).toString() + " VNĐ");
         lblPhongHDCT.setText(dv.getMaPhong());
         lblSDTHDCT.setText(dv.getSoDT());
         lblTenKhachHangHoaDon.setText(dv.getTenKH());
@@ -4083,9 +4103,9 @@ public class Main extends javax.swing.JFrame {
 
     private void txtDaSuDungCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtDaSuDungCaretUpdate
         Double tien = Double.valueOf(lblTienDichVu.getText());
-        Double daSDDB= Double.valueOf(txtDaSuDung.getText());
+        Double daSDDB = Double.valueOf(txtDaSuDung.getText());
         BigDecimal daSD = new BigDecimal(daSDDB * tien);
-        
+
         lblTongTienDichVu.setText(String.valueOf(daSD).toString());
     }//GEN-LAST:event_txtDaSuDungCaretUpdate
 
@@ -4102,70 +4122,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_txtClearKHActionPerformed
 
     private void btnTimKiemKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemKHActionPerformed
-     String maSV = this.txtTimKiemKH.getText();
-        int check = 0;
-        if (maSV.trim().length() == 0) {
-            JOptionPane.showMessageDialog(this, "Hãy nhập tên khách hàng cần tìm kiếm");
-            return;
-        } else {
-            for (QLKhachHang sv : this.khsv.getAll()) {
-                if (sv.getMaKH().equalsIgnoreCase(txtTimKiemKH.getText())) {
-                    check++;
-                    this.txtMaKH.setText(sv.getMaKH());
-                    this.txtTenKH.setText(sv.getTenKH());
-                    this.jDateChNgaySinh.setDate(sv.getNgaySinh());
-                    this.txtCCCD.setText(sv.getCCCD());
-                    this.txtSDT.setText(sv.getSDT());
-                    this.txtEmail.setText(sv.getEmail());
-                    this.txtDiaChi.setText(sv.getDiaChi());
-                    JOptionPane.showMessageDialog(this, "Tìm thấy khách hàng");
-                }
-            }
-        }
-        if (check == 0) {
-            this.clearFormKhachHang();
-            JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng");
-        }
-        try {
-            Connection conn = DBConnection.getConnection();
-            if (conn != null) {
-                DefaultTableModel dtm = (DefaultTableModel) this.tblKhachHang.getModel();
-                dtm.setRowCount(0);
-                String sql = "SELECT * FROM KhachHang WHERE MAKH= ?";
-                java.sql.CallableStatement ps = conn.prepareCall(sql);
-                ps.setString(1, txtMaKH.getText());
-                ps.execute();
-                java.sql.ResultSet rs = ps.getResultSet();
-                while (rs.next()) {
-                    String MaKh = rs.getString("MaKH");
-                    String TenKH = rs.getString("TenKH");
-                    String NgaySInh = rs.getString("NgaySinh");
-                    Date NgSinh = Date.valueOf(NgaySInh);
-                    int GioiTinh = rs.getInt("GioiTinh");
-                    String SDT = rs.getString("SDT");
-                    String CCCD = rs.getString("CCCD");
-                    String DiaCHi = rs.getString("DiaCHi");
-                    String email = rs.getString("email");
-                    this.jDateChNgaySinh.setDate(NgSinh);
-                    if (GioiTinh == 1) {
-                        this.rdoNam.setSelected(true);
-                    } else {
-                        this.rdoNu.setSelected(true);
-
-                    }
-                    dtm.addRow(new Object[]{MaKh, TenKH, NgaySInh, GioiTinh == 1 ? "Nam" : "Nữ",
-                        SDT,DiaCHi,CCCD, email});
-                }
-
-            } else {
-                
-                JOptionPane.showMessageDialog(this, "Hãy nhập mã khách hàng cần tìm");
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String ten = txtTimKiemKH.getText();
+        if (ten.trim().length() == 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên khách hàng");
             return;
         }
+        loadTableKhachHangTK(ten);
     }//GEN-LAST:event_btnTimKiemKHActionPerformed
 
     private void btnSuaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaKHActionPerformed
@@ -4239,9 +4201,7 @@ public class Main extends javax.swing.JFrame {
         }
         if (tblKhachHang.getValueAt(row, 8).toString().equalsIgnoreCase("Đang thuê")) {
             this.rdoDangThue.setSelected(true);
-        } else if (tblKhachHang.getValueAt(row, 8).toString().equalsIgnoreCase("Đã hết hạn")) {
-            this.rdoHetHan.setSelected(true);
-        } else {
+        } else if (tblKhachHang.getValueAt(row, 8).toString().equalsIgnoreCase("Chưa Thuê")) {
             this.rdoChuaThue.setSelected(true);
         }
         DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
@@ -4294,7 +4254,7 @@ public class Main extends javax.swing.JFrame {
     private void btnThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMouseClicked
         LoaiPhong lp = this.getFormDataLoaiPhong();
         if (lp == null) {
-            JOptionPane.showMessageDialog(this, "Cần nhập đầy đủ thông tin");
+
             return;
         } else if (checkTrungMa(lp.getMaLP())) {
             JOptionPane.showMessageDialog(this, "mã ko được trùng");
@@ -4492,7 +4452,7 @@ public class Main extends javax.swing.JFrame {
         HoaDonChiTiet.setVisible(false);
         ThongKe.setVisible(false);
         this.showDataComboBoxKhachHang();
-        this.showDataComboBoxPhong();
+        this.showDataComboBoxPhong(tt);
         this.loadTableKhachHang();
     }//GEN-LAST:event_KhachHangMouseClicked
 
@@ -4509,7 +4469,9 @@ public class Main extends javax.swing.JFrame {
         QLPhong.setVisible(false);
         HoaDonChiTiet.setVisible(false);
         ThongKe.setVisible(false);
-                this.loadTableHopDong();
+        this.loadTableHopDong();
+        showDataComboBoxKhachHang();
+        showDataComboBoxPhong(tt);
     }//GEN-LAST:event_HopDongMouseClicked
 
     private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
@@ -4558,7 +4520,7 @@ public class Main extends javax.swing.JFrame {
                     TongTien1 += Double.parseDouble(viTri);
                 }
             }
-            lblDuNo.setText(String.valueOf(TongTien1).toString() +"VNĐ");
+            lblDuNo.setText(String.valueOf(TongTien1).toString() + "VNĐ");
             lblTongTienThanhToan.setText("");
         } else if (tt == 1) {
             double TongTien1 = 0;
@@ -4568,22 +4530,22 @@ public class Main extends javax.swing.JFrame {
                 TongTien1 += Double.parseDouble(viTri);
 
             }
-            lblTongTienThanhToan.setText(BigDecimal.valueOf(TongTien1).toString()+ "VNĐ");
+            lblTongTienThanhToan.setText(BigDecimal.valueOf(TongTien1).toString() + "VNĐ");
             lblDuNo.setText("");
         }
 
         //        }else{
         //            double TongTien =0;
         //            for (int i = 0; i < row; i++) {
-            //                TongTien+= Double.parseDouble(tblThongKe.getValueAt(i, 4).toString());
-            //            }
+        //                TongTien+= Double.parseDouble(tblThongKe.getValueAt(i, 4).toString());
+        //            }
         //             lblDuNo.setText(String.valueOf(TongTien));
         //        }
     }//GEN-LAST:event_btnXemActionPerformed
 
     private void btnSendMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMailActionPerformed
         SendMail sen = new SendMail();
-              sen.setVisible(true);
+        sen.setVisible(true);
     }//GEN-LAST:event_btnSendMailActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -4591,23 +4553,24 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void btnTimkiemLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimkiemLPActionPerformed
-    String index = cbbSearchLP.getSelectedItem().toString();
-        System.out.println(index);
-    DefaultTableModel dtm = (DefaultTableModel) this.tblLoaiPhong.getModel();
-    dtm.setRowCount(0);
-        for (QLLoaiPhong tb : this.lpsv.getOne(index)) {
-            if(index.equals(tb)){
-                System.out.println("đã tìm đc");
-                Object[] rowData = {
-                tb.getMaLP(),
-                tb.getTenLP(),
-                tb.getMoTa(),
-                tb.getTrangThai() == 1 ? "Còn" : "Hết",};
-            dtm.addRow(rowData);
-        }
-            }
-        
-      
+//    String index = cbbSearchLP.getSelectedItem().toString();
+//        System.out.println(index);
+//    DefaultTableModel dtm = (DefaultTableModel) this.tblLoaiPhong.getModel();
+//    dtm.setRowCount(0);
+//        for (QLLoaiPhong tb : this.lpsv.getOne(index)) {
+//            if(index.equals(tb)){
+//                System.out.println("đã tìm đc");
+//                Object[] rowData = {
+//                tb.getMaLP(),
+//                tb.getTenLP(),
+//                tb.getMoTa(),
+//                tb.getTrangThai() == 1 ? "Còn" : "Hết",};
+//            dtm.addRow(rowData);
+//        }
+//            }
+
+        int tt = cbbSearchLP.getSelectedIndex();
+        TKloaiPhong(tt);
     }//GEN-LAST:event_btnTimkiemLPActionPerformed
 
     private void cbbTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTrangThaiActionPerformed
@@ -4615,12 +4578,17 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_cbbTrangThaiActionPerformed
 
     private void QLLoaiPhongAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_QLLoaiPhongAncestorAdded
-        this.showDataLoaiPhong();
+
     }//GEN-LAST:event_QLLoaiPhongAncestorAdded
 
     private void cbbSearchLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSearchLPActionPerformed
-        
+
     }//GEN-LAST:event_cbbSearchLPActionPerformed
+
+    private void txtTimKiemKHKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKHKeyReleased
+        String ten = txtTimKiemKH.getText();
+        loadTableKhachHangTK(ten);
+    }//GEN-LAST:event_txtTimKiemKHKeyReleased
 
     /**
      * @param args the command line arguments
@@ -4883,7 +4851,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdoDaThue;
     private javax.swing.JRadioButton rdoDangThue;
     private javax.swing.JRadioButton rdoHet;
-    private javax.swing.JRadioButton rdoHetHan;
     private javax.swing.JRadioButton rdoHoatDong;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNgungHD;

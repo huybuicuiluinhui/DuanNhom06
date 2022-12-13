@@ -97,5 +97,27 @@ public class PhongTroRepositories implements PhongTroRepositoriesImpl{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public ArrayList<PhongTro> comboBox(int trangThai) {
+          String query = " Select * from PhongTro where TrangThai = 1";
+        try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(query);) {
+           // ps.setInt(0, trangThai) ;
+            ResultSet rs = ps.executeQuery();
+
+            ArrayList<PhongTro> list = new ArrayList<>();
+            while (rs.next()) {
+                PhongTro sp = new PhongTro();
+                sp.setMaPT(rs.getString(1));
+                //sp.setTrangthai(rs.getInt(7));
+                list.add(sp);
+            }
+            System.out.println(list.size());
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
     
 }

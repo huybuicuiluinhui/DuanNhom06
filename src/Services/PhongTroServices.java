@@ -38,6 +38,11 @@ public class PhongTroServices implements PhongTroServicesImpl{
     public void delete(String ma) {
         phRP.delete(ma);
     }
+
+    @Override
+    public ArrayList<PhongTro> comboBox(int trangThai) {
+        return phRP.comboBox(trangThai);
+    }
  
     
 }

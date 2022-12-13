@@ -20,4 +20,5 @@ public interface PhongTroRepositoriesImpl {
     void update(String ma, PhongTro lp);
 
     void delete(String ma); 
+     ArrayList<PhongTro> comboBox(int trangThai);
 }

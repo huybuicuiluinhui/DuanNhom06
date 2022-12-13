@@ -1,4 +1,3 @@
-
 package Views;
 
 import Utilities.DBConnection;
@@ -9,12 +8,14 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+
 public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
         setDefaultCloseOperation(Login.DISPOSE_ON_CLOSE);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -274,32 +275,31 @@ public class Login extends javax.swing.JFrame {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
 //        Main main = new Main();
 //        main.setVisible(true);
-  try {
+        try {
             Connection con = DBConnection.getConnection();
             String userName = txtUser.getText();
             String password = txtPass.getText();
-              String sql = "select username,passwordS from Users where username ='"+userName+"'and passwordS='"+password+"'";
-        PreparedStatement ps = con.prepareStatement(sql);
-                      ResultSet rs = ps.executeQuery(); 
-                      if(rs.next()){
-                          dispose();
-                          Main hpage = new Main();
-                          hpage.show();
-                      }
-                      else{
-                          JOptionPane.showMessageDialog(this,"UserName or password wrong...");
-                          txtUser.setText("");
-                          txtPass.setText("");
-                             
-                              }
-                      con.close();
+            String sql = "select username,passwordS from TaiKhoan where username ='" + userName + "'and passwordS='" + password + "'";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                dispose();
+                Main hpage = new Main();
+                hpage.show();
+            } else {
+                JOptionPane.showMessageDialog(this, "UserName or password wrong...");
+                txtUser.setText("");
+                txtPass.setText("");
+
+            }
+            con.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            
-                    }
 
-  
+        }
+
+
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel3AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel3AncestorAdded
@@ -307,26 +307,25 @@ public class Login extends javax.swing.JFrame {
             Connection con = DBConnection.getConnection();
             String userName = txtUser.getText();
             String password = txtPass.getText();
-              String sql = "select username,passwordS from Users where username ='"+userName+"'and passwordS='"+password+"'";
-        PreparedStatement ps = con.prepareStatement(sql);
-                      ResultSet rs = ps.executeQuery(); 
-                      if(rs.next()){
-                          dispose();
-                          Main hpage = new Main();
-                          hpage.show();
-                      }
-                      else{
-                          JOptionPane.showMessageDialog(this,"UserName or password wrong...");
-                          txtUser.setText("");
-                          txtPass.setText("");
-                             
-                              }
-                      con.close();
+            String sql = "select username,passwordS from TaiKhoan where username ='" + userName + "'and passwordS='" + password + "'";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                dispose();
+                Main hpage = new Main();
+                hpage.show();
+            } else {
+                JOptionPane.showMessageDialog(this, "UserName or password wrong...");
+                txtUser.setText("");
+                txtPass.setText("");
+
+            }
+            con.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            
-                    }
+
+        }
     }//GEN-LAST:event_jLabel3AncestorAdded
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed

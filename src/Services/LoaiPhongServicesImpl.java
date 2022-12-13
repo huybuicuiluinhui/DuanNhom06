@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public interface LoaiPhongServicesImpl {
      ArrayList<QLLoaiPhong> getAll();
-     ArrayList<QLLoaiPhong> getOne(String tenLP);
+     ArrayList<QLLoaiPhong> getOne(int tt);
 
     void insert(LoaiPhong lp);
 
