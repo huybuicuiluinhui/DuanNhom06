@@ -14,8 +14,10 @@ import java.util.ArrayList;
  *
  * @author PC
  */
-public class HopDongServices implements HopDongServicesImpl{
-   HopDongRepositoriesImpl hdRP = new  HopDongRepositories();
+public class HopDongServices implements HopDongServicesImpl {
+
+    HopDongRepositoriesImpl hdRP = new HopDongRepositories();
+
     @Override
     public ArrayList<QLHopDong> getAllHD() {
         return hdRP.getAllHD();
@@ -35,5 +37,15 @@ public class HopDongServices implements HopDongServicesImpl{
     public void delete(String ma) {
         hdRP.delete(ma);
     }
-    
+
+    @Override
+    public ArrayList<QLHopDong> getAllTrangThai(int tt) {
+        return hdRP.getAllTrangThai(tt);
+    }
+
+    @Override
+    public ArrayList<QLHopDong> getAllTK(String ten) {
+        return hdRP.getAllTK(ten);
+    }
+
 }

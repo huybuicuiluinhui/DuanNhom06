@@ -58,11 +58,11 @@ public class HoaDonChiTietRepositories implements HoaDonChiTietRepositoriesImpl 
 
     @Override
     public void update(String ma, HoaDonChiTiet hdct) {
-        String sql = "update HoaDonChiTiet set MaDichVu =?, DaSuDung =?  where MaHoaDon =?";
+        String sql = "update HoaDonChiTiet set MaDichVu =?, DaSuDung =?, TongTien=?   where MaHoaDon =?";
         try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setObject(3, hdct.getMaHoaDon());
+            ps.setObject(4, hdct.getMaHoaDon());
             ps.setObject(1, hdct.getMaDichVu());
-            // ps.setObject(2, hdct.getTongTien());
+             ps.setObject(3, hdct.getTongTien());
             ps.setObject(2, hdct.getDaSuDung());
             ps.executeUpdate();
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class HoaDonChiTietRepositories implements HoaDonChiTietRepositoriesImpl 
 
     @Override
     public void delete(String ma) {
-        String sql = "delete from HoaDonChiTiet where MaHoaDon = ?";
+        String sql = "delete from HoaDonChiTiet where DaSuDung = ?";
         try (
                  Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setObject(1, ma);

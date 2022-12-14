@@ -30,7 +30,7 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
             ResultSet rs = ps.executeQuery();
             ArrayList<QLHopDong> listCTSanPham = new ArrayList<>();
             while (rs.next()) {
-                QLHopDong ctSanPham = new QLHopDong(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDouble(6),
+                QLHopDong ctSanPham = new QLHopDong(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDouble(6),
                         rs.getDate(7), rs.getDate(8), rs.getDouble(9), rs.getString(10), rs.getInt(11));
                 listCTSanPham.add(ctSanPham);
             }
@@ -46,7 +46,7 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
     public void insert(HopDong hd) {
         String sql = "exec sp_insert_HopDong ?, ?, ?, ?, ?, ?, ?, ?";
         try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-     
+
             ps.setObject(1, hd.getMaHD());
             ps.setObject(2, hd.getMaKH());
             ps.setObject(3, hd.getMaPT());
@@ -55,8 +55,8 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
             ps.setObject(6, hd.getTienCoc());
             ps.setObject(7, hd.getMoTa());
             ps.setObject(8, hd.getTrangThai());
-           //  ps.setObject(0, ps);
-           ps.executeUpdate();
+            //  ps.setObject(0, ps);
+            ps.executeUpdate();
             //con.close();
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -75,7 +75,7 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
 
     @Override
     public ArrayList<QLHopDong> getMaPT() {
-         String query = "select MaHD, TenKH, PhongTro.MaPT,TenLoaiPhong,GiaTien,DienTich, NgayKy, NgayHetHan, TienCoc, HopDong.Mota, HopDong.TrangThai from HopDong \n"
+        String query = "select MaHD, TenKH, PhongTro.MaPT,TenLoaiPhong,GiaTien,DienTich, NgayKy, NgayHetHan, TienCoc, HopDong.Mota, HopDong.TrangThai from HopDong \n"
                 + "join KhachHang on KhachHang.MaKH = HopDong.MaKH\n"
                 + "join PhongTro on PhongTro.MaPT = HopDong.MaPT\n"
                 + "join LoaiPhong on LoaiPhong.MaLoaiPhong = PhongTro.MaLoaiPhong";
@@ -83,7 +83,53 @@ public class HopDongRepositories implements HopDongRepositoriesImpl {
             ResultSet rs = ps.executeQuery();
             ArrayList<QLHopDong> listCTSanPham = new ArrayList<>();
             while (rs.next()) {
-                QLHopDong ctSanPham = new QLHopDong(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDouble(6),
+                QLHopDong ctSanPham = new QLHopDong(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDouble(6),
+                        rs.getDate(7), rs.getDate(8), rs.getDouble(9), rs.getString(10), rs.getInt(11));
+                listCTSanPham.add(ctSanPham);
+            }
+            System.out.println(listCTSanPham.size());
+            return listCTSanPham;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<QLHopDong> getAllTrangThai(int tt) {
+        String query = "select MaHD, TenKH, PhongTro.MaPT,TenLoaiPhong,GiaTien,DienTich, NgayKy, NgayHetHan, TienCoc, HopDong.Mota, HopDong.TrangThai from HopDong \n"
+                + "join KhachHang on KhachHang.MaKH = HopDong.MaKH\n"
+                + "join PhongTro on PhongTro.MaPT = HopDong.MaPT\n"
+                + "join LoaiPhong on LoaiPhong.MaLoaiPhong = PhongTro.MaLoaiPhong where HopDong.TrangThai = ?";
+        try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(query);) {
+            ps.setInt(1, tt);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<QLHopDong> listCTSanPham = new ArrayList<>();
+            while (rs.next()) {
+                QLHopDong ctSanPham = new QLHopDong(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDouble(6),
+                        rs.getDate(7), rs.getDate(8), rs.getDouble(9), rs.getString(10), rs.getInt(11));
+                listCTSanPham.add(ctSanPham);
+            }
+            System.out.println(listCTSanPham.size());
+            return listCTSanPham;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<QLHopDong> getAllTK(String ten) {
+        String query = "select MaHD, TenKH, PhongTro.MaPT,TenLoaiPhong,GiaTien,DienTich, NgayKy, NgayHetHan, TienCoc, HopDong.Mota, HopDong.TrangThai from HopDong \n"
+                + "join KhachHang on KhachHang.MaKH = HopDong.MaKH\n"
+                + "join PhongTro on PhongTro.MaPT = HopDong.MaPT\n"
+                + "join LoaiPhong on LoaiPhong.MaLoaiPhong = PhongTro.MaLoaiPhong where KhachHang.TenKH like N'%"+ten+"%' or MaHD like N'%"+ten+"%' or PhongTro.MaPT like N'%"+ten+"%' ";
+        try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(query);) {
+           // ps.setString(1, tt);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<QLHopDong> listCTSanPham = new ArrayList<>();
+            while (rs.next()) {
+                QLHopDong ctSanPham = new QLHopDong(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDouble(6),
                         rs.getDate(7), rs.getDate(8), rs.getDouble(9), rs.getString(10), rs.getInt(11));
                 listCTSanPham.add(ctSanPham);
             }

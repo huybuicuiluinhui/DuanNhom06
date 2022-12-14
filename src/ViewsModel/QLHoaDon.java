@@ -14,6 +14,7 @@ public class QLHoaDon {
 
     private String MaHDon;
     private String tenKH;
+    private String maDV;
     private String soDT;
     private String maPhong;
     private double giaPhong;
@@ -33,6 +34,14 @@ public class QLHoaDon {
     }
 
     public QLHoaDon() {
+    }
+
+    public String getMaDV() {
+        return maDV;
+    }
+
+    public void setMaDV(String maDV) {
+        this.maDV = maDV;
     }
 
     public String getMaPhong() {

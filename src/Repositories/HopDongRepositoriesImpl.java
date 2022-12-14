@@ -21,4 +21,6 @@ public interface HopDongRepositoriesImpl {
     void update(String ma, HopDong hd);
 
     void delete(String ma); 
+    ArrayList<QLHopDong> getAllTrangThai(int tt);
+    ArrayList<QLHopDong> getAllTK(String ten);
 }

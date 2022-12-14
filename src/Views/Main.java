@@ -83,7 +83,7 @@ public class Main extends javax.swing.JFrame {
         this.loadTableHopDong();
         showDataComboBoxDichVu();
         showDataComboBoxThongke();
-        showDataComboBoxHoaDonChiTiet();
+       // showDataComboBoxHoaDonChiTiet();
         showDataComboBoxKhachHang();
         showDataHD();
         showDataComboBoxPhong(tt);
@@ -449,6 +449,25 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
+    public void loadTableHopDongTimKiem(int tt) {
+
+        DefaultTableModel dtm = (DefaultTableModel) this.tblHopDong.getModel();
+        dtm.setRowCount(0);
+        for (QLHopDong dv : this.hopDongSV.getAllTrangThai(tt)) {
+
+            dtm.addRow(dv.toDataRow());
+        }
+    }
+
+    public void loadTableTimKiemHopDong(String ten) {
+
+        DefaultTableModel dtm = (DefaultTableModel) this.tblHopDong.getModel();
+        dtm.setRowCount(0);
+        for (QLHopDong dv : this.hopDongSV.getAllTK(ten)) {
+            dtm.addRow(dv.toDataRow());
+        }
+    }
+
     public void showDataComboBoxKhachHang() {
         DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTenKhachHang.getModel();
         dcm.removeAllElements();
@@ -707,10 +726,11 @@ public class Main extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         tblHopDong = new javax.swing.JTable();
         jPanel25 = new javax.swing.JPanel();
-        jTextField12 = new javax.swing.JTextField();
+        txtTimKiemHopDong = new javax.swing.JTextField();
         btnThemHopDong = new javax.swing.JButton();
         btnInHopDong = new javax.swing.JButton();
-        btnHienThiHopDong1 = new javax.swing.JButton();
+        btnTimKiemTrangThaiHopDong = new javax.swing.JButton();
+        cbbTrangThaiHopDong = new javax.swing.JComboBox<>();
         jPanel26 = new javax.swing.JPanel();
         jLabel60 = new javax.swing.JLabel();
         QLPhong = new javax.swing.JPanel();
@@ -1250,11 +1270,16 @@ public class Main extends javax.swing.JFrame {
 
         jPanel24.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 38, 860, 370));
 
-        jPanel25.setBackground(new java.awt.Color(0, 255, 204));
+        jPanel25.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField12.addActionListener(new java.awt.event.ActionListener() {
+        txtTimKiemHopDong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField12ActionPerformed(evt);
+                txtTimKiemHopDongActionPerformed(evt);
+            }
+        });
+        txtTimKiemHopDong.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemHopDongKeyReleased(evt);
             }
         });
 
@@ -1285,46 +1310,54 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        btnHienThiHopDong1.setBackground(new java.awt.Color(153, 204, 255));
-        btnHienThiHopDong1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnHienThiHopDong1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/iconSearch.png"))); // NOI18N
-        btnHienThiHopDong1.setText("Search");
-        btnHienThiHopDong1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnHienThiHopDong1.setBorderPainted(false);
-        btnHienThiHopDong1.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKiemTrangThaiHopDong.setBackground(new java.awt.Color(153, 204, 255));
+        btnTimKiemTrangThaiHopDong.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnTimKiemTrangThaiHopDong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/iconSearch.png"))); // NOI18N
+        btnTimKiemTrangThaiHopDong.setText("Search");
+        btnTimKiemTrangThaiHopDong.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnTimKiemTrangThaiHopDong.setBorderPainted(false);
+        btnTimKiemTrangThaiHopDong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHienThiHopDong1ActionPerformed(evt);
+                btnTimKiemTrangThaiHopDongActionPerformed(evt);
             }
         });
+
+        cbbTrangThaiHopDong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đã hết hạn", "Còn hạn" }));
 
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
         jPanel25Layout.setHorizontalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel25Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel25Layout.createSequentialGroup()
                 .addContainerGap(231, Short.MAX_VALUE)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTimKiemHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel25Layout.createSequentialGroup()
                         .addComponent(btnThemHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(88, 88, 88)
-                        .addComponent(btnInHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(98, 98, 98)
-                .addComponent(btnHienThiHopDong1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(124, 124, 124))
+                        .addComponent(btnInHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(73, 73, 73)
+                .addComponent(cbbTrangThaiHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnTimKiemTrangThaiHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel25Layout.createSequentialGroup()
+            .addGroup(jPanel25Layout.createSequentialGroup()
                 .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThemHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
+                .addComponent(txtTimKiemHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87))
+            .addGroup(jPanel25Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHienThiHopDong1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59))
+                    .addComponent(btnTimKiemTrangThaiHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbTrangThaiHopDong, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(148, 148, 148))
         );
 
         jPanel24.add(jPanel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(-5, 410, 870, 260));
@@ -2370,7 +2403,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(PanelRight2Layout.createSequentialGroup()
                 .addGroup(PanelRight2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 859, Short.MAX_VALUE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -3694,7 +3727,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMaHoaDonActionPerformed
 
-    private void btnHienThiHopDong1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHienThiHopDong1ActionPerformed
+    private void btnTimKiemTrangThaiHopDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemTrangThaiHopDongActionPerformed
 //        String maDV = this.txtTimKiemDV.getText();
 //        int check = 0;
 //        if (maDV.trim().length() == 0) {
@@ -3749,7 +3782,9 @@ public class Main extends javax.swing.JFrame {
 //            e.printStackTrace();
 //            return;
 //        }
-    }//GEN-LAST:event_btnHienThiHopDong1ActionPerformed
+        int tk = cbbTrangThaiHopDong.getSelectedIndex();
+        loadTableHopDongTimKiem(tk);
+    }//GEN-LAST:event_btnTimKiemTrangThaiHopDongActionPerformed
 
     private void btnInHopDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHopDongActionPerformed
 
@@ -3843,9 +3878,9 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnThemHopDongActionPerformed
 
-    private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
+    private void txtTimKiemHopDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemHopDongActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField12ActionPerformed
+    }//GEN-LAST:event_txtTimKiemHopDongActionPerformed
 
     private void tblHopDongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHopDongMouseClicked
         int row = this.tblHopDong.getSelectedRow();
@@ -4036,9 +4071,11 @@ public class Main extends javax.swing.JFrame {
             return;
         }
 
-        String maHD = this.tblHoaDonChiTiet.getValueAt(row, 0).toString();
-        hdctSV.delete(maHD);
+        String maHD = this.tblHoaDonChiTiet.getValueAt(row, 3).toString();
+         
+        hdctSV.delete(maHD.substring(0, maHD.indexOf(" ")));
         QLHoaDon dv = (QLHoaDon) cbbMaHoaDonBangHDCT.getSelectedItem();
+        
         loadTableHoaDonChitiet(dv.getMaHDon(), dv.getGiaPhong());
         JOptionPane.showMessageDialog(this, "Xóa thành công");
     }//GEN-LAST:event_btnXoaHDCTActionPerformed
@@ -4088,7 +4125,14 @@ public class Main extends javax.swing.JFrame {
         //         QLDichVu dv = list.get(indexDichVu);
         //  QLDichVu dv = list.get(indexDichVu);
         //   QLDichVu dv1 = (QLDichVu) cbbTenDichVu.getSelectedItem();
-        cbbTenDichVu.setSelectedItem(tenDV);
+       cbbTenDichVu.setSelectedItem(tenDV);
+        int cc = cbbTenDichVu.getItemCount();
+        for (int i = 0; i < cc; i++) {
+            String dichVu= cbbTenDichVu.getItemAt(i);
+            if(dichVu.equals(tenDV)){
+                cbbTenDichVu.setSelectedItem(tenDV);
+            }
+        }
     }//GEN-LAST:event_tblHoaDonChiTietMouseClicked
 
     private void jPanel10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel10KeyPressed
@@ -4392,6 +4436,7 @@ public class Main extends javax.swing.JFrame {
         ThongKe.setVisible(false);
         showDataComboBoxHoaDonChiTiet();
         showDataComboBoxDichVu();
+        
     }//GEN-LAST:event_HDCTMouseClicked
 
     private void HoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoaDonMouseClicked
@@ -4590,6 +4635,11 @@ public class Main extends javax.swing.JFrame {
         loadTableKhachHangTK(ten);
     }//GEN-LAST:event_txtTimKiemKHKeyReleased
 
+    private void txtTimKiemHopDongKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemHopDongKeyReleased
+        String tk = txtTimKiemHopDong.getText();
+        loadTableTimKiemHopDong(tk);
+    }//GEN-LAST:event_txtTimKiemHopDongKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -4658,7 +4708,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel ThongKe;
     private javax.swing.JButton btnHienThiDV;
     private javax.swing.JButton btnHienThiHoaDon;
-    private javax.swing.JButton btnHienThiHopDong1;
     private javax.swing.JButton btnInHoaDon;
     private javax.swing.JButton btnInHopDong;
     private javax.swing.JButton btnSendMail;
@@ -4677,6 +4726,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnThemKH;
     private javax.swing.JButton btnThemPhon;
     private javax.swing.JButton btnTimKiemKH;
+    private javax.swing.JButton btnTimKiemTrangThaiHopDong;
     private javax.swing.JButton btnTimkiemLP;
     private javax.swing.JButton btnXem;
     private javax.swing.JPanel btnXoa;
@@ -4699,6 +4749,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbbTenPhong;
     private javax.swing.JComboBox<String> cbbThang;
     private javax.swing.JComboBox<String> cbbTrangThai;
+    private javax.swing.JComboBox<String> cbbTrangThaiHopDong;
     private javax.swing.JLabel close;
     private javax.swing.JLabel hienMenu;
     private javax.swing.JButton jButton4;
@@ -4827,7 +4878,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JPanel jpanl1;
     private javax.swing.JPanel jplSileMune;
@@ -4894,6 +4944,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField txtTenKH;
     private javax.swing.JTextField txtTienCoc;
     private javax.swing.JTextField txtTimKiemDV;
+    private javax.swing.JTextField txtTimKiemHopDong;
     private javax.swing.JTextField txtTimKiemKH;
     private javax.swing.JTextField txtTimKiemLP;
     private javax.swing.JTextField txtTongTien;

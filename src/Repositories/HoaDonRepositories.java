@@ -85,7 +85,7 @@ public class HoaDonRepositories implements HoaDonRepositoriesImpl {
                 + "                                         dbo.PhongTro ON dbo.HopDong.MaPT = dbo.PhongTro.MaPT\n"
                 + "where MaHDon= ?";
         try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(query);) {
-           // ps.setString(1, maHoaDon);
+            // ps.setString(1, maHoaDon);
             ResultSet rs = ps.executeQuery();
             ArrayList<QLHoaDon> listCTSanPham = new ArrayList<>();
             while (rs.next()) {
