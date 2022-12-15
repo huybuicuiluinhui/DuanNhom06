@@ -12,6 +12,7 @@ import java.sql.Date;
  * @author PC
  */
 public class QLHopDong {
+
     private String MaHD;
     private String tenKH;
     private String MaPT;
@@ -27,7 +28,7 @@ public class QLHopDong {
     public QLHopDong() {
     }
 
-    public QLHopDong(String MaHD, String tenKH,String MaPT ,String tenPhong, double giaPhong, double dienTich, Date NgayKy, Date NgayHetHan, Double TienCoc, String MoTa, int TrangThai) {
+    public QLHopDong(String MaHD, String tenKH, String MaPT, String tenPhong, double giaPhong, double dienTich, Date NgayKy, Date NgayHetHan, Double TienCoc, String MoTa, int TrangThai) {
         this.MaHD = MaHD;
         this.tenKH = tenKH;
         this.MaPT = MaPT;
@@ -129,20 +130,23 @@ public class QLHopDong {
         this.TrangThai = TrangThai;
     }
 
-   
-    public String gettrangthai(){
-        if(TrangThai==1){
+    public String gettrangthai() {
+        if (TrangThai == 1) {
             return "Còn hạn";
-        }
-        else{
+        } else {
             return "Đã hết hạn";
         }
     }
-   
- public Object[] toDataRow() {
-       BigDecimal bigDecimal = new BigDecimal(TienCoc);
-            String Tien=bigDecimal.toString();
-        return new Object[]{MaHD,tenKH,MaPT,tenPhong,giaPhong + " VNĐ",dienTich+" m2",NgayKy,NgayHetHan,Tien + " VNĐ",MoTa,gettrangthai()};
+
+    public Object[] toDataRow() {
+        BigDecimal bigDecimal = new BigDecimal(TienCoc);
+        String Tien = bigDecimal.toString();
+        return new Object[]{MaHD, tenKH, MaPT, tenPhong, giaPhong + " VNĐ", dienTich + " m2", NgayKy, NgayHetHan, Tien + " VNĐ", MoTa, gettrangthai()};
     }
-    
+
+    @Override
+    public String toString() {
+        return MaPT;
+    }
+
 }

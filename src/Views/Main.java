@@ -81,9 +81,9 @@ public class Main extends javax.swing.JFrame {
         tblPhong.getTableHeader().setForeground(new Color(255, 255, 255));
         tblPhong.setRowHeight(25);
         this.loadTableHopDong();
-        showDataComboBoxDichVu();
-        showDataComboBoxThongke();
-       // showDataComboBoxHoaDonChiTiet();
+        // showDataComboBoxDichVu();
+        // showDataComboBoxThongke();
+        // showDataComboBoxHoaDonChiTiet();
         showDataComboBoxKhachHang();
         showDataHD();
         showDataComboBoxPhong(tt);
@@ -566,7 +566,7 @@ public class Main extends javax.swing.JFrame {
         dcm.removeAllElements();
         ArrayList<QLHopDong> list = this.hopDongSV.getAllHD();
         for (QLHopDong x : list) {
-            dcm.addElement(x.getMaHD());
+            dcm.addElement(x);
 
         }
     }
@@ -629,17 +629,28 @@ public class Main extends javax.swing.JFrame {
         HoaDonChiTiet hd = new HoaDonChiTiet(ten.getMaHDon(), dv.getMaDV(), Double.parseDouble(tt), used);
         return hd;
     }
+     public HoaDonChiTiet getFormDataChiTietSua() {
+        String tt = lblTongTienDichVu.getText().trim();
+        String used = txtDaSuDung.getText().trim();
+        int indexHoaDon = cbbMaHoaDonBangHDCT.getSelectedIndex();
+        ArrayList<QLHoaDon> listLoaiPhong = this.hoaDonDV.getAllHD();
+        QLHoaDon ten = listLoaiPhong.get(indexHoaDon);
+        int indexDichVu = cbbTenDichVu.getSelectedIndex();
+        ArrayList<QLDichVu> list = this.dichvuSV.getAllDV();
+        QLDichVu dv = list.get(indexDichVu);
+        HoaDonChiTiet hd = new HoaDonChiTiet(ten.getMaHDon(), dv.getTenDV(), Double.parseDouble(tt), used);
+        return hd;
+    }
     ////---===================================================================================================================================================================
 
-    public void showDataComboBoxThongke() {
-        DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTrangThai.getModel();
-        dcm.removeAllElements();
-        ArrayList<QLHoaDon> list = this.hoaDonDV.getAllHD();
-        for (QLHoaDon x : list) {
-            dcm.addElement(x.gettrangthai());
-        }
-    }
-
+//    public void showDataComboBoxThongke() {
+//        DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTrangThai.getModel();
+//        dcm.removeAllElements();
+//        ArrayList<QLHoaDon> list = this.hoaDonDV.getAllHD();
+//        for (QLHoaDon x : list) {
+//            dcm.addElement(x.gettrangthai());
+//        }
+//    }
     public void loadTableThongKe(int trangthai, int month, int year) {
         DefaultTableModel dtm = (DefaultTableModel) this.tblThongKe.getModel();
         dtm.setRowCount(0);
@@ -2087,11 +2098,15 @@ public class Main extends javax.swing.JFrame {
         jLabel36.setForeground(new java.awt.Color(255, 255, 255));
         jLabel36.setText("CCCD");
 
-        txtCCCD.setEditable(false);
         txtCCCD.setBackground(new java.awt.Color(71, 120, 197));
         txtCCCD.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtCCCD.setForeground(new java.awt.Color(255, 255, 255));
         txtCCCD.setBorder(null);
+        txtCCCD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCCCDActionPerformed(evt);
+            }
+        });
 
         jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(255, 255, 255));
@@ -2452,6 +2467,11 @@ public class Main extends javax.swing.JFrame {
                 cbbTenDichVuItemStateChanged(evt);
             }
         });
+        cbbTenDichVu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbTenDichVuActionPerformed(evt);
+            }
+        });
 
         txtDaSuDung.setBackground(new java.awt.Color(71, 120, 197));
         txtDaSuDung.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -2549,7 +2569,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbbTenDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbTenDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel50))
                 .addGap(49, 49, 49)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2655,6 +2675,11 @@ public class Main extends javax.swing.JFrame {
         cbbMaHoaDonBangHDCT.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbbMaHoaDonBangHDCTItemStateChanged(evt);
+            }
+        });
+        cbbMaHoaDonBangHDCT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbMaHoaDonBangHDCTActionPerformed(evt);
             }
         });
 
@@ -2969,7 +2994,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(ThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ThongKeLayout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(cbbTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ThongKeLayout.createSequentialGroup()
                         .addGap(95, 95, 95)
@@ -3408,12 +3433,18 @@ public class Main extends javax.swing.JFrame {
         jLabel71.setText("Tổng tiền");
         DuLieu5.add(jLabel71, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, -1, -1));
 
+        txtTongTien.setEditable(false);
         txtTongTien.setBackground(new java.awt.Color(71, 120, 197));
         txtTongTien.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtTongTien.setForeground(new java.awt.Color(255, 255, 255));
         txtTongTien.setBorder(null);
         DuLieu5.add(txtTongTien, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 254, 203, 30));
 
+        cbbMaPhong.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbMaPhongItemStateChanged(evt);
+            }
+        });
         DuLieu5.add(cbbMaPhong, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 203, 29));
 
         txtNgayTao.setBackground(new java.awt.Color(71, 120, 197));
@@ -4056,9 +4087,18 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Hãy chọn dòng cần sửa");
             return;
         }
-
-        String maHD = this.tblHoaDonChiTiet.getValueAt(row, 0).toString();
-        hdctSV.update(maHD, hdct);
+         int indexDichVu = cbbTenDichVu.getSelectedIndex();
+        ArrayList<QLDichVu> list = this.dichvuSV.getAllDV();
+        QLDichVu dv1 = list.get(row);
+      //  String dv2 =  cbbTenDichVu.getSelectedItem().toString();
+        //System.out.println(dv2.getTenDV());
+        DefaultTableModel dtm = (DefaultTableModel) this.tblHoaDonChiTiet.getModel();
+        //String maHD = this.tblHoaDonChiTiet.getValueAt(row, 1).toString();
+           String madv = dtm.getValueAt(row, 1).toString();
+       
+      
+        //System.out.println(maHD);
+        hdctSV.update(madv, hdct);
         QLHoaDon dv = (QLHoaDon) cbbMaHoaDonBangHDCT.getSelectedItem();
         loadTableHoaDonChitiet(dv.getMaHDon(), dv.getGiaPhong());
         JOptionPane.showMessageDialog(this, "Sửa thành công");
@@ -4072,10 +4112,10 @@ public class Main extends javax.swing.JFrame {
         }
 
         String maHD = this.tblHoaDonChiTiet.getValueAt(row, 3).toString();
-         
+
         hdctSV.delete(maHD.substring(0, maHD.indexOf(" ")));
         QLHoaDon dv = (QLHoaDon) cbbMaHoaDonBangHDCT.getSelectedItem();
-        
+
         loadTableHoaDonChitiet(dv.getMaHDon(), dv.getGiaPhong());
         JOptionPane.showMessageDialog(this, "Xóa thành công");
     }//GEN-LAST:event_btnXoaHDCTActionPerformed
@@ -4113,26 +4153,31 @@ public class Main extends javax.swing.JFrame {
         //QLHoaDon dv = (QLHoaDon) cbbMaHoaDonBangHDCT.getSelectedItem();
         txtDaSuDung.setText(used.substring(0, used.indexOf(" ")));
         lblTienDichVu.setText(price.substring(0, price.indexOf(" ")));
-        lblTongTienDichVu.setText(sum.substring(0, sum.indexOf(" ")));
-        //  lbDonvi.setText(used.substring(used.lastIndexOf(" ")));
+        /// lblTongTienDichVu.setText(sum.substring(0, sum.indexOf(" ")));
+         lbDonvi.setText(used.substring(used.lastIndexOf(" ")));
         // cbbMaHoaDonBangHDCT.setSelectedItem(dv.getMaHDon());
         //        int indexHoaDon = cbbMaHoaDonBangHDCT.getSelectedIndex();
         //        ArrayList<QLHoaDon> listLoaiPhong = this.hoaDonDV.getAllHD();
         //        QLHoaDon ten = listLoaiPhong.get(indexHoaDon);
-        //
+        DefaultComboBoxModel dcm = (DefaultComboBoxModel) this.cbbTenDichVu.getModel();
+
+       //dcm.setSelectedItem(ABORT);
+          // dcm.setSelectedItem(tenDV);
+        
+
         //        int indexDichVu = cbbTenDichVu.getSelectedIndex();
         //        ArrayList<QLDichVu> list = this.dichvuSV.getAllDV();
         //         QLDichVu dv = list.get(indexDichVu);
         //  QLDichVu dv = list.get(indexDichVu);
         //   QLDichVu dv1 = (QLDichVu) cbbTenDichVu.getSelectedItem();
-       cbbTenDichVu.setSelectedItem(tenDV);
-        int cc = cbbTenDichVu.getItemCount();
-        for (int i = 0; i < cc; i++) {
-            String dichVu= cbbTenDichVu.getItemAt(i);
-            if(dichVu.equals(tenDV)){
-                cbbTenDichVu.setSelectedItem(tenDV);
-            }
-        }
+//       cbbTenDichVu.setSelectedItem(tenDV);
+//        int cc = cbbTenDichVu.getItemCount();
+//        for (int i = 0; i < cc; i++) {
+//            String dichVu= cbbTenDichVu.getItemAt(i);
+//            if(dichVu.equals(tenDV)){
+//                cbbTenDichVu.setSelectedItem(tenDV);
+//            }
+//        }
     }//GEN-LAST:event_tblHoaDonChiTietMouseClicked
 
     private void jPanel10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel10KeyPressed
@@ -4434,9 +4479,10 @@ public class Main extends javax.swing.JFrame {
         QLPhong.setVisible(false);
         HoaDonChiTiet.setVisible(true);
         ThongKe.setVisible(false);
-        showDataComboBoxHoaDonChiTiet();
         showDataComboBoxDichVu();
-        
+        showDataComboBoxHoaDonChiTiet();
+
+
     }//GEN-LAST:event_HDCTMouseClicked
 
     private void HoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoaDonMouseClicked
@@ -4619,7 +4665,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimkiemLPActionPerformed
 
     private void cbbTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTrangThaiActionPerformed
-        // TODO add your handling code here:
+        cbbTrangThai.getSelectedItem();
     }//GEN-LAST:event_cbbTrangThaiActionPerformed
 
     private void QLLoaiPhongAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_QLLoaiPhongAncestorAdded
@@ -4639,6 +4685,23 @@ public class Main extends javax.swing.JFrame {
         String tk = txtTimKiemHopDong.getText();
         loadTableTimKiemHopDong(tk);
     }//GEN-LAST:event_txtTimKiemHopDongKeyReleased
+
+    private void txtCCCDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCCCDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCCCDActionPerformed
+
+    private void cbbMaHoaDonBangHDCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbMaHoaDonBangHDCTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbMaHoaDonBangHDCTActionPerformed
+
+    private void cbbMaPhongItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbMaPhongItemStateChanged
+        QLHopDong hd = (QLHopDong) cbbMaPhong.getSelectedItem();
+        txtTongTien.setText(String.valueOf(hd.getGiaPhong()));
+    }//GEN-LAST:event_cbbMaPhongItemStateChanged
+
+    private void cbbTenDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTenDichVuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbTenDichVuActionPerformed
 
     /**
      * @param args the command line arguments

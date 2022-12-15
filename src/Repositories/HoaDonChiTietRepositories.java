@@ -58,12 +58,13 @@ public class HoaDonChiTietRepositories implements HoaDonChiTietRepositoriesImpl 
 
     @Override
     public void update(String ma, HoaDonChiTiet hdct) {
-        String sql = "update HoaDonChiTiet set MaDichVu =?, DaSuDung =?, TongTien=?   where MaHoaDon =?";
+        String sql = "update HoaDonChiTiet set TongTien=?, DaSuDung=?  where MaDichVu =?";
         try ( Connection con = DBConnection.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setObject(4, hdct.getMaHoaDon());
-            ps.setObject(1, hdct.getMaDichVu());
-             ps.setObject(3, hdct.getTongTien());
+//            ps.setObject(1, hdct.getMaHoaDon());
+//            ps.setObject(2, hdct.getMaDichVu());
+            ps.setObject(1, hdct.getTongTien());
             ps.setObject(2, hdct.getDaSuDung());
+            ps.setObject(3, hdct.getMaDichVu());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(System.out);
