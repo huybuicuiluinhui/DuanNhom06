@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="46745c87-5e58-4bf9-bd31-11750bfbbeb3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="cd0e9aab-f954-44a8-9a24-80a2dd3643c0"/>
+	<parameter name="MaHoaDon" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT        dbo.HoaDonChiTiet.MaHoaDon, dbo.HopDong.MaPT, dbo.KhachHang.TenKH, dbo.KhachHang.SDT, Sum(dbo.HoaDonChiTiet.TongTien) as TongTienDV , dbo.PhongTro.GiaTien as TienPhong,dbo.HoaDon.NgayTao, dbo.HoaDon.TrangThai
+FROM            dbo.HoaDonChiTiet INNER JOIN
+                         dbo.HoaDon ON dbo.HoaDonChiTiet.MaHoaDon = dbo.HoaDon.MaHDon INNER JOIN
+                         dbo.DichVu ON dbo.HoaDonChiTiet.MaDichVu = dbo.DichVu.MaDichVu INNER JOIN
+                         dbo.HopDong ON dbo.HoaDon.MaHD = dbo.HopDong.MaHD INNER JOIN
+                         dbo.KhachHang ON dbo.HopDong.MaKH = dbo.KhachHang.MaKH INNER JOIN
+                         dbo.PhongTro ON dbo.HopDong.MaPT = dbo.PhongTro.MaPT
+where dbo.HoaDonChiTiet.MaHoaDon = $P{MaHoaDon}
+GROUP BY dbo.HoaDonChiTiet.MaHoaDon, dbo.HopDong.MaPT, dbo.KhachHang.TenKH, dbo.KhachHang.SDT,dbo.PhongTro.GiaTien,dbo.HoaDon.NgayTao, dbo.HoaDon.TrangThai
+]]>
+	</queryString>
+	<field name="MaHoaDon" class="java.lang.String"/>
+	<field name="MaPT" class="java.lang.String"/>
+	<field name="TenKH" class="java.lang.String"/>
+	<field name="SDT" class="java.lang.String"/>
+	<field name="TongTienDV" class="java.lang.Double"/>
+	<field name="TienPhong" class="java.math.BigDecimal"/>
+	<field name="NgayTao" class="java.sql.Date"/>
+	<field name="TrangThai" class="java.lang.Integer"/>
+	<variable name="TongTienDV_SUM" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{TongTienDV}]]></variableExpression>
+	</variable>
+	<variable name="TongTienDV_SUM_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{TongTienDV}]]></variableExpression>
+	</variable>
+	<variable name="NgayTao_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{NgayTao}]]></variableExpression>
+	</variable>
+	<variable name="NgayTao_2" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{NgayTao}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="253" splitType="Stretch">
+			<staticText>
+				<reportElement x="150" y="0" width="205" height="30" uuid="a4ec0af1-a38e-4f7e-bd2f-89689ebecf75"/>
+				<textElement>
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hóa đơn chi tiết]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="58" width="131" height="20" uuid="4ae0b9bb-d92f-408b-9872-a2f429666193"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MaHoaDon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="59" width="100" height="20" uuid="4334a102-020b-462c-afb2-d0f96e8a76a6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MaPT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="59" width="78" height="20" uuid="9d115e3c-bb0c-48fd-b547-780592a29990"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Số hóa đơn:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="58" width="100" height="20" uuid="359429b4-8e60-4648-a0d7-d2185f2a6330"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mã phòng:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-34" y="30" width="589" height="1" uuid="7eddfd53-c84b-44cc-8ad9-9e51c65dc44d"/>
+			</line>
+			<staticText>
+				<reportElement x="12" y="97" width="77" height="20" uuid="628d73f1-eb6b-4e7c-a306-634d16b23032"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tên khác hàng:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="97" width="131" height="20" uuid="f8ae9842-9d49-4438-87a8-2795db5250de"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TenKH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="136" width="88" height="20" uuid="3da568f8-ded8-4cde-9aac-5a53bc85aeb7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tổng tiền dịch vụ: ]]></text>
+			</staticText>
+			<textField pattern="###0">
+				<reportElement x="99" y="136" width="131" height="20" uuid="f6aac0e5-2a94-43e6-a4fc-5c57ce4e5bd7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TongTienDV}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="168" width="100" height="20" uuid="ee931c0e-c229-4593-ad6c-be6eb16f5e56"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tiền phòng:]]></text>
+			</staticText>
+			<textField pattern="###0.0">
+				<reportElement x="99" y="168" width="100" height="20" uuid="602c72b1-5feb-4007-a9c4-0dddcff28ec2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TienPhong}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="267" y="97" width="100" height="20" uuid="362e1124-9e05-496c-87be-8a6feff99f8d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Số điện thoại:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="136" width="100" height="20" uuid="496e3028-626e-40a2-9d91-1694fa5dfa3d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày tạo hóa đơn:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="355" y="97" width="100" height="20" uuid="11e7829a-f584-4204-98e5-c121ae237bf1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SDT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="355" y="136" width="100" height="20" uuid="0063a91c-2e66-4573-a814-fe1b2c9ce912"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NgayTao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="203" width="100" height="20" uuid="3230ce17-8ca9-4b72-a7aa-72e1b026113c"/>
+				<text><![CDATA[Tổng: ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="78" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="74" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="120" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="69" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="328" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
